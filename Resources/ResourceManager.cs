@@ -19,7 +19,7 @@ namespace Resources
         }
         public ICollection<Book> ReadSource()
         {
-            string localPath = _mainPath + @"Google-Books-1,3K.csv";
+            string localPath = _mainPath + @"GoodreadsBooks.csv";
 
             try
             {

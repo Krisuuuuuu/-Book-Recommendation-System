@@ -10,6 +10,7 @@ namespace Content_Based_Filtering
         static void Main(string[] args)
         {
             IResourcer<Book> resourceManager = new ResourceManager();
+            var result = resourceManager.ReadSource();
         }
     }
 }

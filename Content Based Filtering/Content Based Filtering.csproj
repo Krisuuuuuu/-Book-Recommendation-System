@@ -6,4 +6,8 @@
     <RootNamespace>Content_Based_Filtering</RootNamespace>
   </PropertyGroup>
 
+  <ItemGroup>
+    <ProjectReference Include="..\Resources\Resources.csproj" />
+  </ItemGroup>
+
 </Project>
