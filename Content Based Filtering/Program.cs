@@ -6,7 +6,7 @@ namespace Content_Based_Filtering
     {
         static void Main(string[] args)
         {
-            Console.WriteLine("Hello World!");
+
         }
     }
 }
