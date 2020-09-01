@@ -1,4 +1,5 @@
-﻿using Model.Shop;
+﻿using Content_Based_Filtering.Interfaces;
+using Model.Shop;
 using Resources;
 using Resources.Interfaces;
 using System;
@@ -9,8 +10,8 @@ namespace Content_Based_Filtering
     {
         static void Main(string[] args)
         {
-            IResourcer<Book> resourceManager = new ResourceManager();
-            var result = resourceManager.ReadSource();
+            IRecommender recommenderSystem = new RecommenderSystem();
+            recommenderSystem.Recommend();
         }
     }
 }
