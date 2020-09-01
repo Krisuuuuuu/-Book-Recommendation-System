@@ -11,7 +11,7 @@ namespace Model.Shop
         public string Genres { get; set; }
         public string Description { get; set; }
         public string Format { get; set; }
-        public string PagesNumber { get; set; }
+        public string PageNumber { get; set; }
         public string Rating { get; set; }
 
     }

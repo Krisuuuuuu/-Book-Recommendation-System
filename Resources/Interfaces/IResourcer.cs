@@ -2,7 +2,7 @@
 
 namespace Resources.Interfaces
 {
-    interface IResourcer<T> where T : class
+    public interface IResourcer<T> where T : class
     {
         ICollection<T> ReadSource();
     }
