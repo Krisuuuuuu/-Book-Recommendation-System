@@ -1,4 +1,5 @@
 ﻿using Content_Based_Filtering.Interfaces;
+using Content_Based_Filtering.Parsers;
 using Model.Shop;
 using Resources;
 using Resources.Interfaces;
@@ -11,14 +12,19 @@ namespace Content_Based_Filtering
     public class RecommenderSystem : IRecommender
     {
         private readonly IResourcer<Book> _resourceManager;
+        private readonly IParser<Book> _bookParser;
         public Shop Shop { get; private set; }
+        public ICollection<string> BookDistinguishingFeatures { get; private set; }
         public RecommenderSystem()
         {
             _resourceManager = new ResourceManager();
+            _bookParser = new BookParser();
+
         }
         public void Recommend()
         {
             PrepareShop();
+            BookDistinguishingFeatures = _bookParser.GetDistinguishingFeatures(Shop.Warehouse.Books);
         }
         private void PrepareShop()
         {
