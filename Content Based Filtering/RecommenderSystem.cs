@@ -1,5 +1,7 @@
 ﻿using Content_Based_Filtering.Interfaces;
 using Content_Based_Filtering.Parsers;
+using Content_Based_Filtering.Vectorizers;
+using Model.Algorithm;
 using Model.Shop;
 using Resources;
 using Resources.Interfaces;
@@ -13,18 +15,21 @@ namespace Content_Based_Filtering
     {
         private readonly IResourcer<Book> _resourceManager;
         private readonly IParser<Book> _bookParser;
+        private readonly ICreator<ItemProfile, string> _itemProfilesManager;
         public Shop Shop { get; private set; }
         public ICollection<string> BookDistinguishingFeatures { get; private set; }
+        public ICollection<ItemProfile> ItemProfiles { get; private set; }
         public RecommenderSystem()
         {
             _resourceManager = new ResourceManager();
             _bookParser = new BookParser();
-
+            _itemProfilesManager = new ItemProfileManager();
         }
         public void Recommend()
         {
             PrepareShop();
             BookDistinguishingFeatures = _bookParser.GetDistinguishingFeatures(Shop.Warehouse.Books);
+            ItemProfiles = _itemProfilesManager.CreateProfiles(BookDistinguishingFeatures, Shop);           
         }
         private void PrepareShop()
         {
