@@ -17,15 +17,19 @@ namespace Content_Based_Filtering
         private readonly IParser<Book> _bookParser;
         private readonly INormalizer<ItemProfile> _normalizationManager;
         private readonly ICreator<ItemProfile, string> _itemProfilesManager;
+        private readonly ICreator<UserProfile, ItemProfile> _userProfilesManager;
         public Shop Shop { get; private set; }
         public ICollection<string> BookDistinguishingFeatures { get; private set; }
         public ICollection<ItemProfile> ItemProfiles { get; private set; }
+
+        public ICollection<UserProfile> UserProfiles { get; private set; }
         public RecommenderSystem()
         {
             _resourceManager = new ResourceManager();
             _bookParser = new BookParser();
             _itemProfilesManager = new ItemProfileManager();
             _normalizationManager = new NormalizationManager();
+            _userProfilesManager = new UserProfileManager();
         }
         public void Recommend()
         {
@@ -34,6 +38,8 @@ namespace Content_Based_Filtering
             BookDistinguishingFeatures = _bookParser.GetDistinguishingFeatures(Shop.Warehouse.Books);
             ItemProfiles = _itemProfilesManager.CreateProfiles(BookDistinguishingFeatures, Shop);
             ItemProfiles = _normalizationManager.Normalize(ItemProfiles);
+
+            UserProfiles = _userProfilesManager.CreateProfiles(ItemProfiles, Shop);
         }
         private void PrepareShop()
         {
@@ -67,7 +73,7 @@ namespace Content_Based_Filtering
             ICollection<Book> books = warehouse.Books;
             ICollection<Book> orderedBooks = new List<Book>();
 
-            Book[] tabOfBooks = books.ToArray<Book>();
+            Book[] tabOfBooks = books.ToArray();
             Random random = new Random();
 
             for (int i = 0; i < 5; i++)

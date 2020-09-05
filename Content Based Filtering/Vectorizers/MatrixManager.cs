@@ -1,9 +1,7 @@
 ﻿using Content_Based_Filtering.Interfaces;
 using Model.Algorithm;
-using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
 
 namespace Content_Based_Filtering.Vectorizers
 {
