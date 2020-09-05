@@ -9,7 +9,7 @@ namespace Model.Algorithm
     {
         public Book Book { get; private set; }
         public ICollection<string> DistinguishingFeatures { get; private set; }
-        public double[] DistinguishingFeaturesBinaryRepresentation { get; private set; }
+        public double[] DistinguishingFeaturesBinaryRepresentation { get; set; }
 
         public ItemProfile(Book book, ICollection<string> features, double[] binaryRepresentation)
         {

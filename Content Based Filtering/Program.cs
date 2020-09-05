@@ -12,6 +12,7 @@ namespace Content_Based_Filtering
         {
             IRecommender recommenderSystem = new RecommenderSystem();
             recommenderSystem.Recommend();
+            Console.ReadKey();
         }
     }
 }

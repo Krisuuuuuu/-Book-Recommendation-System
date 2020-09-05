@@ -15,6 +15,7 @@ namespace Content_Based_Filtering
     {
         private readonly IResourcer<Book> _resourceManager;
         private readonly IParser<Book> _bookParser;
+        private readonly INormalizer<ItemProfile> _normalizationManager;
         private readonly ICreator<ItemProfile, string> _itemProfilesManager;
         public Shop Shop { get; private set; }
         public ICollection<string> BookDistinguishingFeatures { get; private set; }
@@ -24,12 +25,15 @@ namespace Content_Based_Filtering
             _resourceManager = new ResourceManager();
             _bookParser = new BookParser();
             _itemProfilesManager = new ItemProfileManager();
+            _normalizationManager = new NormalizationManager();
         }
         public void Recommend()
         {
             PrepareShop();
+
             BookDistinguishingFeatures = _bookParser.GetDistinguishingFeatures(Shop.Warehouse.Books);
-            ItemProfiles = _itemProfilesManager.CreateProfiles(BookDistinguishingFeatures, Shop);           
+            ItemProfiles = _itemProfilesManager.CreateProfiles(BookDistinguishingFeatures, Shop);
+            ItemProfiles = _normalizationManager.Normalize(ItemProfiles);
         }
         private void PrepareShop()
         {
