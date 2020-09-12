@@ -4,6 +4,7 @@ using Content_Based_Filtering.Vectorizers;
 using Model.Algorithm;
 using Model.Shop;
 using Resources;
+using Resources.DataSources;
 using Resources.Interfaces;
 using System;
 using System.Collections.Generic;
@@ -18,11 +19,14 @@ namespace Content_Based_Filtering
         private readonly INormalizer<ItemProfile> _normalizationManager;
         private readonly ICreator<ItemProfile, string> _itemProfilesManager;
         private readonly ICreator<UserProfile, ItemProfile> _userProfilesManager;
+        private readonly IVectorizer _tfidfManager;
+        private readonly IEvaluator _userPredictionsManager;
         public Shop Shop { get; private set; }
+        public TFIDFRepresentation TFIDFRepresentation { get; private set; }
         public ICollection<string> BookDistinguishingFeatures { get; private set; }
         public ICollection<ItemProfile> ItemProfiles { get; private set; }
-
         public ICollection<UserProfile> UserProfiles { get; private set; }
+        public ICollection<UserPredictions> UsersPredictions { get; private set; }
         public RecommenderSystem()
         {
             _resourceManager = new ResourceManager();
@@ -30,6 +34,8 @@ namespace Content_Based_Filtering
             _itemProfilesManager = new ItemProfileManager();
             _normalizationManager = new NormalizationManager();
             _userProfilesManager = new UserProfileManager();
+            _tfidfManager = new TFIDFManager();
+            _userPredictionsManager = new UserPredictionsManager();
         }
         public void Recommend()
         {
@@ -40,18 +46,28 @@ namespace Content_Based_Filtering
             ItemProfiles = _normalizationManager.Normalize(ItemProfiles);
 
             UserProfiles = _userProfilesManager.CreateProfiles(ItemProfiles, Shop);
+
+            TFIDFRepresentation = new TFIDFRepresentation(BookDistinguishingFeatures.Count);
+            TFIDFRepresentation.DistinguishingFeaturesDF = _tfidfManager.CalculateDF(ItemProfiles, TFIDFRepresentation);
+            TFIDFRepresentation.DistinguishingFeaturesIDF = _tfidfManager.CalculateIDF(TFIDFRepresentation, ItemProfiles.Count);
+
+            ItemProfiles = _tfidfManager.CalculateWeightedScores(TFIDFRepresentation, ItemProfiles);
+
+            UsersPredictions = _userPredictionsManager.CreateUserPredictions(Shop.Clients, UserProfiles, TFIDFRepresentation, ItemProfiles);
         }
         private void PrepareShop()
         {
             Warehouse warehouse = new Warehouse();
-            warehouse.Books = _resourceManager.ReadSource();
+            //warehouse.Books = _resourceManager.ReadSource();
+            warehouse.Books = TestBooksGenerator.GenerateBooks();
 
             Shop = new Shop("Best Book Shop");
             Shop.Warehouse = warehouse;
 
-            Client client = new Client("Christopher", "Crown");
-            client.Orders = GenerateOrders(Shop.Warehouse);
-            Shop.Clients.Add(client);
+            //Client client = new Client("Christopher", "Crown");
+            //client.Orders = GenerateOrders(Shop.Warehouse);
+            //Shop.Clients.Add(client);
+            Shop.Clients = TestUsersGenerator.GenerateClients();
         }
 
         private ICollection<Order> GenerateOrders(Warehouse warehouse)

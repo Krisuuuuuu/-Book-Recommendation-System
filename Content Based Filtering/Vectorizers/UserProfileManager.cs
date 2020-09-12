@@ -45,6 +45,7 @@ namespace Content_Based_Filtering.Vectorizers
             {
                 foreach (ItemProfile item in allItemProfiles)
                 {
+                    
                     if (order.Products.Contains(item.Book) && !itemProfilesOfPurchasedProduct.Contains(item))
                     {
                         itemProfilesOfPurchasedProduct.Add(item);
@@ -57,6 +58,10 @@ namespace Content_Based_Filtering.Vectorizers
                     Console.WriteLine("Product: " + book.Title);
                 }
             }
+
+            ItemProfile[] items = allItemProfiles.ToArray();
+            itemProfilesOfPurchasedProduct.Add(items[0]);
+            itemProfilesOfPurchasedProduct.Add(items[1]);
 
             return itemProfilesOfPurchasedProduct;
         }

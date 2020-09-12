@@ -13,7 +13,7 @@ namespace Resources.DataSources
             {
                 Authors = "Andrzej Sapkowski",
                 Title = "The Witcher: Blood of Elves",
-                Genres = "Dark Fantasy|Action|Magic|Slav|Fiction|Non-Humans|Life-History"
+                Genres = "Dark Fantasy|Action|Magic|Slav|Fiction|Non-Humans"
             };
 
             Book book2 = new Book()
@@ -62,32 +62,43 @@ namespace Resources.DataSources
 
             Book book8 = new Book()
             {
-                Authors = "Illiad",
-                Title = "Homer",
+                Authors = "Homer",
+                Title = "Illiad",
                 Genres = "History|Action|Mythology|Epos|Art|Antique|Greece"
             };
 
             Book book9 = new Book()
             {
-                Authors = "Make It Before God",
-                Title = "Hanna Krall",
+                Authors = "Hanna Krall",
+                Title = "Make It Before God",
                 Genres = "History|Action|War|Judes|Nazism|Retrospection|Extermination|Holocaust"
             };
 
             Book book10 = new Book()
             {
-                Authors = "Band of Brothers",
-                Title = "Stephen Ambrose",
+                Authors = "Stephen Ambrose",
+                Title = "Band of Brothers",
                 Genres = "History|Action|War|Nazism|Retrospection|Extermination|Soldiers"
             };
 
             Book book11 = new Book()
             {
-                Authors = "Teutonic Knights",
-                Title = "Henryk Sienkiewicz",
+                Authors = "Henryk Sienkiewicz",
+                Title = "Teutonic Knights",
                 Genres = "History|Action|War|Middle Ages|Love|Knights"
             };
 
+            books.Add(book1);
+            books.Add(book2);
+            books.Add(book3);
+            books.Add(book4);
+            books.Add(book5);
+            books.Add(book6);
+            books.Add(book7);
+            books.Add(book8);
+            books.Add(book9);
+            books.Add(book10);
+            books.Add(book11);
             return books;
         }
     }

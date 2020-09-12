@@ -12,7 +12,7 @@ namespace Model.Shop
         {
             get
             {
-                return Name + Surname;
+                return Name + " " + Surname;
             }
 
         }

@@ -16,7 +16,7 @@ namespace Resources.DataSources
             {
                 Authors = "Andrzej Sapkowski",
                 Title = "The Witcher: Blood of Elves",
-                Genres = "Dark Fantasy|Action|Magic|Slav|Fiction|Non-Humans|Life-History"
+                Genres = "Dark Fantasy|Action|Magic|Slav|Fiction|Non-Humans"
             };
 
             Book book2 = new Book()
@@ -26,17 +26,16 @@ namespace Resources.DataSources
                 Genres = "Fantasy|Action|Magic|Fiction|Adventure|Non-Humans"
             };
 
-            Order order1 = new Order(1, DateTime.Now);
-            order1.Products.Add(book1);
-            orders.Add(order1);
+            Order order = new Order(1, DateTime.Now);
+            order.Products.Add(book1);
+            order.Products.Add(book2);
+            orders.Add(order);
 
-            Order order2 = new Order(2, DateTime.Now);
-            order2.Products.Add(book2);
-            orders.Add(order2);
 
             Client client = new Client("Christopher", "Crown");
             client.Orders = orders;
 
+            clients.Add(client);
             return clients;
         }
     }
