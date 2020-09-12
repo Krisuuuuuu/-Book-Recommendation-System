@@ -53,7 +53,7 @@ namespace Content_Based_Filtering
 
             ItemProfiles = _tfidfManager.CalculateWeightedScores(TFIDFRepresentation, ItemProfiles);
 
-            UsersPredictions = _userPredictionsManager.CreateUserPredictions(Shop.Clients, UserProfiles, TFIDFRepresentation, ItemProfiles);
+            UsersPredictions = _userPredictionsManager.CreateUserPredictions(Shop.Clients, UserProfiles, ItemProfiles);
         }
         private void PrepareShop()
         {

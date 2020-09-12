@@ -10,7 +10,7 @@ namespace Content_Based_Filtering.Vectorizers
     public class UserPredictionsManager : IEvaluator
     {
         public ICollection<UserPredictions> CreateUserPredictions(ICollection<Client> clients, ICollection<UserProfile> userProfiles,
-            TFIDFRepresentation tfidf, ICollection<ItemProfile> itemProfiles)
+            ICollection<ItemProfile> itemProfiles)
         {
             ICollection<UserPredictions> usersPredictions = new List<UserPredictions>();
 
@@ -21,7 +21,7 @@ namespace Content_Based_Filtering.Vectorizers
             {
                 UserPredictions userPredictions = new UserPredictions(clientsArray[i], userProfilesArray[i]);
 
-                //userPredictions.Predictions = CalculateUserPredictions(userProfilesArray[i], userPredictions, tfidf, itemProfiles);
+                userPredictions.Predictions = CalculateUserPredictions(userProfilesArray[i], itemProfiles);
 
                 usersPredictions.Add(userPredictions);
             }
@@ -29,18 +29,19 @@ namespace Content_Based_Filtering.Vectorizers
             return usersPredictions;
         }
 
-        //private double[] CalculateUserPredictions(UserProfile userProfile, UserPredictions userPredictions, 
-        //    TFIDFRepresentation tfidf, ICollection<ItemProfile> itemProfiles)
-        //{
+        private double[] CalculateUserPredictions(UserProfile userProfile, ICollection<ItemProfile> itemProfiles)
+        {
+            double[] predictions = new double[itemProfiles.Count];
+            ItemProfile[] itemProfilesArray = itemProfiles.ToArray();
 
-        //    double[] weightedScores = new double[itemProfiles.Count];
-        //    double[] idf = tfidf.DistinguishingFeaturesIDF;
-
-        //    ItemProfile[] itemProfilesArray = itemProfiles.ToArray();
-
-
-
-        //    return predictions;
-        //}
+            for (int i = 0; i < itemProfilesArray.Length; i++)
+            {
+                for (int j = 0; j < predictions.Length; j++)
+                {
+                    predictions[i] += itemProfilesArray[i].WeightedScores[j] * userProfile.Preferences[j];
+                }
+            }
+            return predictions;
+        }
     }
 }
