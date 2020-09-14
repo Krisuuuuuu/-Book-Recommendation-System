@@ -21,7 +21,9 @@ namespace Content_Based_Filtering.Vectorizers
             {
                 UserPredictions userPredictions = new UserPredictions(clientsArray[i], userProfilesArray[i]);
 
-                userPredictions.Predictions = CalculateUserPredictions(userProfilesArray[i], itemProfiles);
+                userPredictions.Predictions = CalculateUserPredictions(userProfilesArray[i], itemProfiles, userPredictions.Results);
+
+                userPredictions.Results = userPredictions.Results.OrderByDescending(i => i.Value).ToDictionary(x => x.Key, x => x.Value);
 
                 usersPredictions.Add(userPredictions);
             }
@@ -29,7 +31,7 @@ namespace Content_Based_Filtering.Vectorizers
             return usersPredictions;
         }
 
-        private double[] CalculateUserPredictions(UserProfile userProfile, ICollection<ItemProfile> itemProfiles)
+        private double[] CalculateUserPredictions(UserProfile userProfile, ICollection<ItemProfile> itemProfiles, IDictionary<Book, double> results)
         {
             double[] predictions = new double[itemProfiles.Count];
             ItemProfile[] itemProfilesArray = itemProfiles.ToArray();
@@ -40,6 +42,8 @@ namespace Content_Based_Filtering.Vectorizers
                 {
                     predictions[i] += itemProfilesArray[i].WeightedScores[j] * userProfile.Preferences[j];
                 }
+
+                results.Add(itemProfilesArray[i].Book, predictions[i]);
             }
             return predictions;
         }

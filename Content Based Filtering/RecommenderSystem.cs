@@ -1,5 +1,6 @@
 ﻿using Content_Based_Filtering.Interfaces;
 using Content_Based_Filtering.Parsers;
+using Content_Based_Filtering.Printers;
 using Content_Based_Filtering.Vectorizers;
 using Model.Algorithm;
 using Model.Shop;
@@ -8,6 +9,7 @@ using Resources.DataSources;
 using Resources.Interfaces;
 using System;
 using System.Collections.Generic;
+using System.Collections.Immutable;
 using System.Linq;
 
 namespace Content_Based_Filtering
@@ -21,6 +23,7 @@ namespace Content_Based_Filtering
         private readonly ICreator<UserProfile, ItemProfile> _userProfilesManager;
         private readonly IVectorizer _tfidfManager;
         private readonly IEvaluator _userPredictionsManager;
+        private readonly IPrinter _printer;
         public Shop Shop { get; private set; }
         public TFIDFRepresentation TFIDFRepresentation { get; private set; }
         public ICollection<string> BookDistinguishingFeatures { get; private set; }
@@ -36,6 +39,7 @@ namespace Content_Based_Filtering
             _userProfilesManager = new UserProfileManager();
             _tfidfManager = new TFIDFManager();
             _userPredictionsManager = new UserPredictionsManager();
+            _printer = new Printer();
         }
         public void Recommend()
         {
@@ -54,6 +58,8 @@ namespace Content_Based_Filtering
             ItemProfiles = _tfidfManager.CalculateWeightedScores(TFIDFRepresentation, ItemProfiles);
 
             UsersPredictions = _userPredictionsManager.CreateUserPredictions(Shop.Clients, UserProfiles, ItemProfiles);
+
+            _printer.PrintResults(UsersPredictions, 3);
         }
         private void PrepareShop()
         {
