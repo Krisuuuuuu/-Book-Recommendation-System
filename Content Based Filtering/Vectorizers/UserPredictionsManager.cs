@@ -31,6 +31,22 @@ namespace Content_Based_Filtering.Vectorizers
             return usersPredictions;
         }
 
+        public ICollection<UserPredictions> PrepareResults(ICollection<UserPredictions> usersPredictions)
+        {
+            foreach(UserPredictions userPredictions in usersPredictions)
+            {
+                foreach(KeyValuePair<Book, double> results in userPredictions.Results)
+                {
+                    if(userPredictions.Client.AllPurchasedProducts.Contains(results.Key))
+                    {
+                        userPredictions.Results.Remove(results);
+                    }
+                }
+            }
+
+            return usersPredictions;
+        }
+
         private double[] CalculateUserPredictions(UserProfile userProfile, ICollection<ItemProfile> itemProfiles, IDictionary<Book, double> results)
         {
             double[] predictions = new double[itemProfiles.Count];

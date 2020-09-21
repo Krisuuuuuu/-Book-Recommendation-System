@@ -41,21 +41,28 @@ namespace Resources
             }
         }
 
-        public void SaveResults(ICollection<UserPredictions> userPredictions)
+        public void SaveResults(ICollection<UserPredictions> usersPredictions)
         {
-            string localPath = _resultPath + @"Results.csv";
+            string directoryPath = _resultPath + DateTime.Now.ToString("dd-MM-yyyy HH.mm.ss");
+            
+            Directory.CreateDirectory(directoryPath);
 
-            try
+            foreach (UserPredictions userPredictions in usersPredictions)
             {
-                using (var writer = new StreamWriter(localPath))
-                using (var csv = new CsvWriter(writer, CultureInfo.InvariantCulture))
+                string localPath = directoryPath + "/" + userPredictions.Client.FullName + ".csv";
+
+                try
                 {
-                    csv.WriteRecords(userPredictions);
+                    using (var writer = new StreamWriter(localPath))
+                    using (var csv = new CsvWriter(writer, CultureInfo.InvariantCulture))
+                    {
+                        csv.WriteRecords(userPredictions.Results);
+                    }
                 }
-            }
-            catch(Exception)
-            {
-                Console.WriteLine("Results has been not saved. Try again later!");
+                catch (Exception)
+                {
+                    Console.WriteLine("Results has been not saved. Try again later!");
+                }
             }
 
         }

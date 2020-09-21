@@ -49,19 +49,9 @@ namespace Content_Based_Filtering.Vectorizers
                     if (order.Products.Contains(item.Book) && !itemProfilesOfPurchasedProduct.Contains(item))
                     {
                         itemProfilesOfPurchasedProduct.Add(item);
-                        Console.WriteLine("Item: " + item.Book.Title);
                     }
                 }
-
-                foreach (Book book in order.Products)
-                {
-                    Console.WriteLine("Product: " + book.Title);
-                }
             }
-
-            ItemProfile[] items = allItemProfiles.ToArray();
-            itemProfilesOfPurchasedProduct.Add(items[0]);
-            itemProfilesOfPurchasedProduct.Add(items[1]);
 
             return itemProfilesOfPurchasedProduct;
         }

@@ -16,13 +16,25 @@ namespace Model.Shop
             }
 
         }
-        public ICollection<Order> Orders { get; set; }
-
-        public Client(string name, string surname)
+        public ICollection<Order> Orders { get; private set; }
+        public ICollection<Book> AllPurchasedProducts { get; private set; }
+        public Client(string name, string surname, ICollection<Order> orders)
         {
-            Orders = new List<Order>();
             Name = name;
             Surname = surname;
+            Orders = orders;
+            AllPurchasedProducts = new List<Book>();
+
+            foreach(Order order in Orders)
+            {
+                foreach(Book book in order.Products)
+                {
+                    if(!AllPurchasedProducts.Contains(book))
+                    {
+                        AllPurchasedProducts.Add(book);
+                    }
+                }
+            }
         }
 
     }

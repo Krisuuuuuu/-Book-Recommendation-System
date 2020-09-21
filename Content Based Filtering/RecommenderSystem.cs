@@ -58,8 +58,11 @@ namespace Content_Based_Filtering
             ItemProfiles = _tfidfManager.CalculateWeightedScores(TFIDFRepresentation, ItemProfiles);
 
             UsersPredictions = _userPredictionsManager.CreateUserPredictions(Shop.Clients, UserProfiles, ItemProfiles);
+            UsersPredictions = _userPredictionsManager.PrepareResults(UsersPredictions);
 
             _printer.PrintResults(UsersPredictions, 3);
+
+            _resourceManager.SaveResults(UsersPredictions);
         }
         private void PrepareShop()
         {
@@ -73,7 +76,7 @@ namespace Content_Based_Filtering
             //Client client = new Client("Christopher", "Crown");
             //client.Orders = GenerateOrders(Shop.Warehouse);
             //Shop.Clients.Add(client);
-            Shop.Clients = TestUsersGenerator.GenerateClients();
+            Shop.Clients = TestUsersGenerator.GenerateClients(warehouse.Books);
         }
 
         private ICollection<Order> GenerateOrders(Warehouse warehouse)

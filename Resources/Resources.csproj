@@ -12,4 +12,8 @@
     <PackageReference Include="CsvHelper" Version="15.0.5" />
   </ItemGroup>
 
+  <ItemGroup>
+    <Folder Include="Results\" />
+  </ItemGroup>
+
 </Project>
