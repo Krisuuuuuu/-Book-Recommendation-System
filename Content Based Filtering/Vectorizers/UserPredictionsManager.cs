@@ -53,7 +53,7 @@ namespace Content_Based_Filtering.Vectorizers
 
             for (int i = 0; i < itemProfilesArray.Length; i++)
             {
-                for (int j = 0; j < predictions.Length; j++)
+                for (int j = 0; j < itemProfilesArray[0].WeightedScores.Length; j++)
                 {
                     predictions[i] += itemProfilesArray[i].WeightedScores[j] * userProfile.Preferences[j];
                 }

@@ -2,7 +2,10 @@
 using Content_Based_Filtering.Parsers;
 using Model.Algorithm;
 using Model.Shop;
+using System.Collections.Concurrent;
 using System.Collections.Generic;
+using System.Linq;
+using System.Threading.Tasks;
 
 namespace Content_Based_Filtering.Vectorizers
 {
@@ -17,10 +20,11 @@ namespace Content_Based_Filtering.Vectorizers
 
         public ICollection<ItemProfile> CreateProfiles(ICollection<string> bookDistinguishingFeatures, Shop shop)
         {
-            ICollection<ItemProfile> itemsProfiles = new List<ItemProfile>();
             var books = shop.Warehouse.Books;
 
-            foreach (Book book in books)
+            ConcurrentBag<ItemProfile> itemsProfiles = new ConcurrentBag<ItemProfile>();
+
+            Parallel.ForEach(books, (book) =>
             {
                 double[] bookDistinguishingFeaturesBinaryRepresentation = new double[bookDistinguishingFeatures.Count];
                 ICollection<string> itemProfileDistinguishingFeatures = new List<string>();
@@ -29,9 +33,9 @@ namespace Content_Based_Filtering.Vectorizers
 
                 ItemProfile itemProfile = new ItemProfile(book, itemProfileDistinguishingFeatures, bookDistinguishingFeaturesBinaryRepresentation);
                 itemsProfiles.Add(itemProfile);
-            }
+            });
 
-            return itemsProfiles;
+            return itemsProfiles.ToList();
         }
 
         private double[] CreateBinaryRepresentation(ICollection<string> distinguishingFeatures, double[] binaryRepresentation, string authors, 

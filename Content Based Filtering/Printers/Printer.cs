@@ -33,11 +33,16 @@ namespace Content_Based_Filtering.Printers
                 foreach(KeyValuePair<Book, double> results in userPredictions.Results.Take(number))
                 {
                     double score = results.Value * 100;
-                    Console.WriteLine(results.Key.Authors.Replace("|", ", ") + " - " + results.Key.Title + " - score - " + score.ToString("F2") + "%");
+                    Console.WriteLine(results.Key.Authors.Replace("|", ", ") + " - " + results.Key.Title + " - score - " + score.ToString("F2"));
                 }
 
                 Console.WriteLine("");
             }
+        }
+        public void PrintSimulationTime(TimeSpan time)
+        {
+            Console.WriteLine("\nSimulation time[s]: " + time.TotalSeconds);
+            Console.WriteLine();
         }
     }
 }

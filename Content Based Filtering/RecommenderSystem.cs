@@ -9,6 +9,7 @@ using Resources.DataSources;
 using Resources.Interfaces;
 using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
 
 namespace Content_Based_Filtering
@@ -23,12 +24,14 @@ namespace Content_Based_Filtering
         private readonly IVectorizer _tfidfManager;
         private readonly IEvaluator _userPredictionsManager;
         private readonly IPrinter _printer;
+        private readonly Stopwatch _stopwatch;
         public Shop Shop { get; private set; }
         public TFIDFRepresentation TFIDFRepresentation { get; private set; }
         public ICollection<string> BookDistinguishingFeatures { get; private set; }
         public ICollection<ItemProfile> ItemProfiles { get; private set; }
         public ICollection<UserProfile> UserProfiles { get; private set; }
         public ICollection<UserPredictions> UsersPredictions { get; private set; }
+        public TimeSpan SimulationTime { get; private set; }
         public RecommenderSystem()
         {
             _resourceManager = new ResourceManager();
@@ -39,9 +42,12 @@ namespace Content_Based_Filtering
             _tfidfManager = new TFIDFManager();
             _userPredictionsManager = new UserPredictionsManager();
             _printer = new Printer();
+            _stopwatch = new Stopwatch();
         }
         public void Recommend()
         {
+            _stopwatch.Start();
+
             PrepareShop();
 
             BookDistinguishingFeatures = _bookParser.GetDistinguishingFeatures(Shop.Warehouse.Books);
@@ -59,23 +65,29 @@ namespace Content_Based_Filtering
             UsersPredictions = _userPredictionsManager.CreateUserPredictions(Shop.Clients, UserProfiles, ItemProfiles);
             UsersPredictions = _userPredictionsManager.PrepareResults(UsersPredictions);
 
-            _printer.PrintResults(UsersPredictions, 3);
+            _stopwatch.Stop();
+            SimulationTime = _stopwatch.Elapsed;
 
+            _printer.PrintResults(UsersPredictions, 10);
+            _printer.PrintSimulationTime(SimulationTime);
             _resourceManager.SaveResults(UsersPredictions);
+
+
         }
         private void PrepareShop()
         {
             Warehouse warehouse = new Warehouse();
-            //warehouse.Books = _resourceManager.ReadSource();
-            warehouse.Books = TestBooksGenerator.GenerateBooks();
+            warehouse.Books = _resourceManager.ReadSource();
+            //warehouse.Books = TestBooksGenerator.GenerateBooks();
 
             Shop = new Shop("Best Book Shop");
             Shop.Warehouse = warehouse;
 
-            //Client client = new Client("Christopher", "Crown");
-            //client.Orders = GenerateOrders(Shop.Warehouse);
-            //Shop.Clients.Add(client);
-            Shop.Clients = TestUsersGenerator.GenerateClients(warehouse.Books);
+            var orders = GenerateOrders(Shop.Warehouse);
+
+            Client client = new Client("Christopher", "Crown", orders);
+            Shop.Clients.Add(client);
+            //Shop.Clients = TestUsersGenerator.GenerateClients(warehouse.Books);
         }
 
         private ICollection<Order> GenerateOrders(Warehouse warehouse)

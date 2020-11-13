@@ -1,8 +1,10 @@
 ﻿using Content_Based_Filtering.Interfaces;
 using Model.Algorithm;
 using Model.Shop;
+using System.Collections.Concurrent;
 using System.Collections.Generic;
 using System.Linq;
+using System.Threading.Tasks;
 
 namespace Content_Based_Filtering.Vectorizers
 {
@@ -15,11 +17,11 @@ namespace Content_Based_Filtering.Vectorizers
         }
         public ICollection<UserProfile> CreateProfiles(ICollection<ItemProfile> allItemProfiles, Shop shop)
         {
-            ICollection<UserProfile> userProfiles = new List<UserProfile>();
+            ConcurrentBag<UserProfile> userProfiles = new ConcurrentBag<UserProfile>();
             int featuresNumber = GetFeaturesNumber(allItemProfiles.ToArray());
             var clients = shop.Clients;
-       
-            foreach (Client client in clients)
+
+            Parallel.ForEach(clients, (client) => 
             {
                 ICollection<ItemProfile> itemProfilesOfPurchasedProducts = SelectItemProfilesOfPurchasedProduct(allItemProfiles, client.Orders);
 
@@ -30,28 +32,27 @@ namespace Content_Based_Filtering.Vectorizers
                 userProfile.Preferences = SetUserPreferences(userProfile.PreferencesMatrix, itemProfilesOfPurchasedProducts.Count, featuresNumber);
 
                 userProfiles.Add(userProfile);
-            }
+            });
 
-            return userProfiles;
+            return userProfiles.ToList();
         }
 
         private ICollection<ItemProfile> SelectItemProfilesOfPurchasedProduct(ICollection<ItemProfile> allItemProfiles, ICollection<Order> orders)
         {
-            ICollection<ItemProfile> itemProfilesOfPurchasedProduct = new List<ItemProfile>();
+            ConcurrentBag<ItemProfile> itemProfilesOfPurchasedProduct = new ConcurrentBag<ItemProfile>();
 
             foreach (Order order in orders)
             {
-                foreach (ItemProfile item in allItemProfiles)
+                Parallel.ForEach(allItemProfiles, (item) => 
                 {
-                    
                     if (order.Products.Contains(item.Book) && !itemProfilesOfPurchasedProduct.Contains(item))
                     {
                         itemProfilesOfPurchasedProduct.Add(item);
                     }
-                }
+                });
             }
 
-            return itemProfilesOfPurchasedProduct;
+            return itemProfilesOfPurchasedProduct.ToList();
         }
 
         private double[] SetUserPreferences(double[,] matrix, int rows, int columns)
