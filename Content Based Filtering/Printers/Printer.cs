@@ -4,7 +4,6 @@ using Model.Shop;
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
 
 namespace Content_Based_Filtering.Printers
 {
@@ -17,10 +16,10 @@ namespace Content_Based_Filtering.Printers
             foreach(UserPredictions userPredictions in usersPredictions)
             {
                 Console.WriteLine("");
-                Console.WriteLine("Client: " + userPredictions.Client.FullName);
+                Console.WriteLine("Client: " + userPredictions.UserProfile.Client.FullName);
                 Console.WriteLine("Purchased Products: ");
 
-                foreach(Order order in userPredictions.Client.Orders)
+                foreach(Order order in userPredictions.UserProfile.Client.Orders)
                 {
                     foreach(Book book in order.Products)
                     {

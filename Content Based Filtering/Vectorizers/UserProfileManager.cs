@@ -1,10 +1,8 @@
 ﻿using Content_Based_Filtering.Interfaces;
 using Model.Algorithm;
 using Model.Shop;
-using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
 
 namespace Content_Based_Filtering.Vectorizers
 {
@@ -25,7 +23,7 @@ namespace Content_Based_Filtering.Vectorizers
             {
                 ICollection<ItemProfile> itemProfilesOfPurchasedProducts = SelectItemProfilesOfPurchasedProduct(allItemProfiles, client.Orders);
 
-                UserProfile userProfile = new UserProfile(itemProfilesOfPurchasedProducts, featuresNumber);
+                UserProfile userProfile = new UserProfile(client, itemProfilesOfPurchasedProducts, featuresNumber);
 
                 userProfile.PreferencesMatrix = _matrixManager.Fill(itemProfilesOfPurchasedProducts, userProfile.PreferencesMatrix);
 

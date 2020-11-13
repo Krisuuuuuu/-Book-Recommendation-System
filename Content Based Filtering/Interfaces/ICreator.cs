@@ -1,8 +1,5 @@
-﻿using Model.Algorithm;
-using Model.Shop;
-using System;
+﻿using Model.Shop;
 using System.Collections.Generic;
-using System.Text;
 
 namespace Content_Based_Filtering.Interfaces
 {

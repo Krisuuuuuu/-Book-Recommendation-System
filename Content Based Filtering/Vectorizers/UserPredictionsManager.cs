@@ -1,7 +1,6 @@
 ﻿using Content_Based_Filtering.Interfaces;
 using Model.Algorithm;
 using Model.Shop;
-using System;
 using System.Collections.Generic;
 using System.Linq;
 
@@ -19,7 +18,7 @@ namespace Content_Based_Filtering.Vectorizers
 
             for (int i = 0; i < clientsArray.Length; i++)
             {
-                UserPredictions userPredictions = new UserPredictions(clientsArray[i], userProfilesArray[i]);
+                UserPredictions userPredictions = new UserPredictions(userProfilesArray[i]);
 
                 userPredictions.Predictions = CalculateUserPredictions(userProfilesArray[i], itemProfiles, userPredictions.Results);
 
@@ -37,7 +36,7 @@ namespace Content_Based_Filtering.Vectorizers
             {
                 foreach(KeyValuePair<Book, double> results in userPredictions.Results)
                 {
-                    if(userPredictions.Client.AllPurchasedProducts.Contains(results.Key))
+                    if(userPredictions.UserProfile.Client.AllPurchasedProducts.Contains(results.Key))
                     {
                         userPredictions.Results.Remove(results);
                     }

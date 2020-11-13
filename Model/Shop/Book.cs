@@ -1,8 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
-
-namespace Model.Shop
+﻿namespace Model.Shop
 {
     public class Book
     {

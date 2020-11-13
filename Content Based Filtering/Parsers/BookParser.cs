@@ -1,8 +1,6 @@
 ﻿using Content_Based_Filtering.Interfaces;
 using Model.Shop;
-using System;
 using System.Collections.Generic;
-using System.Text;
 
 namespace Content_Based_Filtering.Parsers
 {

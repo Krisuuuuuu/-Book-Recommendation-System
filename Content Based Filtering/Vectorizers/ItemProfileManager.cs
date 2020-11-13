@@ -2,7 +2,6 @@
 using Content_Based_Filtering.Parsers;
 using Model.Algorithm;
 using Model.Shop;
-using System.Collections;
 using System.Collections.Generic;
 
 namespace Content_Based_Filtering.Vectorizers

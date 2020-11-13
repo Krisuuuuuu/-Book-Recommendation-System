@@ -9,7 +9,6 @@ using Resources.DataSources;
 using Resources.Interfaces;
 using System;
 using System.Collections.Generic;
-using System.Collections.Immutable;
 using System.Linq;
 
 namespace Content_Based_Filtering

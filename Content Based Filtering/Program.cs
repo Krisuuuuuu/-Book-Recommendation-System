@@ -1,7 +1,4 @@
 ﻿using Content_Based_Filtering.Interfaces;
-using Model.Shop;
-using Resources;
-using Resources.Interfaces;
 using System;
 
 namespace Content_Based_Filtering

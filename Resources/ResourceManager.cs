@@ -49,7 +49,7 @@ namespace Resources
 
             foreach (UserPredictions userPredictions in usersPredictions)
             {
-                string localPath = directoryPath + "/" + userPredictions.Client.FullName + ".csv";
+                string localPath = directoryPath + "/" + userPredictions.UserProfile.Client.FullName + ".csv";
 
                 try
                 {
