@@ -21,17 +21,19 @@ namespace Content_Based_Filtering.Vectorizers
         public ICollection<ItemProfile> CreateProfiles(ICollection<string> bookDistinguishingFeatures, Shop shop)
         {
             var books = shop.Warehouse.Books;
-
             ConcurrentBag<ItemProfile> itemsProfiles = new ConcurrentBag<ItemProfile>();
 
             Parallel.ForEach(books, (book) =>
             {
                 double[] bookDistinguishingFeaturesBinaryRepresentation = new double[bookDistinguishingFeatures.Count];
                 ICollection<string> itemProfileDistinguishingFeatures = new List<string>();
-                bookDistinguishingFeaturesBinaryRepresentation = CreateBinaryRepresentation(bookDistinguishingFeatures, bookDistinguishingFeaturesBinaryRepresentation,
-                    book.Authors, book.Genres, ref itemProfileDistinguishingFeatures);
 
-                ItemProfile itemProfile = new ItemProfile(book, itemProfileDistinguishingFeatures, bookDistinguishingFeaturesBinaryRepresentation);
+                bookDistinguishingFeaturesBinaryRepresentation = CreateBinaryRepresentation(bookDistinguishingFeatures, 
+                    bookDistinguishingFeaturesBinaryRepresentation, book.Authors, book.Genres, 
+                    ref itemProfileDistinguishingFeatures);
+
+                ItemProfile itemProfile = new ItemProfile(book, itemProfileDistinguishingFeatures, 
+                    bookDistinguishingFeaturesBinaryRepresentation);
                 itemsProfiles.Add(itemProfile);
             });
 

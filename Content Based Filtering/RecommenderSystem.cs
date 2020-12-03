@@ -79,7 +79,7 @@ namespace Content_Based_Filtering
             Warehouse warehouse = new Warehouse();
             warehouse.Books = _resourceManager.ReadSource();
             //warehouse.Books = TestBooksGenerator.GenerateBooks();
-
+            
             Shop = new Shop("Best Book Shop");
             Shop.Warehouse = warehouse;
 

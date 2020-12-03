@@ -23,13 +23,16 @@ namespace Content_Based_Filtering.Vectorizers
 
             Parallel.ForEach(clients, (client) => 
             {
-                ICollection<ItemProfile> itemProfilesOfPurchasedProducts = SelectItemProfilesOfPurchasedProduct(allItemProfiles, client.Orders);
+                ICollection<ItemProfile> itemProfilesOfPurchasedProducts = SelectItemProfilesOfPurchasedProduct(allItemProfiles, 
+                    client.Orders);
 
                 UserProfile userProfile = new UserProfile(client, itemProfilesOfPurchasedProducts, featuresNumber);
 
-                userProfile.PreferencesMatrix = _matrixManager.Fill(itemProfilesOfPurchasedProducts, userProfile.PreferencesMatrix);
+                userProfile.PreferencesMatrix = _matrixManager.Fill(itemProfilesOfPurchasedProducts, 
+                    userProfile.PreferencesMatrix);
 
-                userProfile.Preferences = SetUserPreferences(userProfile.PreferencesMatrix, itemProfilesOfPurchasedProducts.Count, featuresNumber);
+                userProfile.Preferences = SetUserPreferences(userProfile.PreferencesMatrix, 
+                    itemProfilesOfPurchasedProducts.Count, featuresNumber);
 
                 userProfiles.Add(userProfile);
             });
@@ -37,7 +40,8 @@ namespace Content_Based_Filtering.Vectorizers
             return userProfiles.ToList();
         }
 
-        private ICollection<ItemProfile> SelectItemProfilesOfPurchasedProduct(ICollection<ItemProfile> allItemProfiles, ICollection<Order> orders)
+        private ICollection<ItemProfile> SelectItemProfilesOfPurchasedProduct(ICollection<ItemProfile> allItemProfiles, 
+            ICollection<Order> orders)
         {
             ConcurrentBag<ItemProfile> itemProfilesOfPurchasedProduct = new ConcurrentBag<ItemProfile>();
 

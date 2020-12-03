@@ -32,8 +32,8 @@ namespace Content_Based_Filtering.Printers
 
                 foreach(KeyValuePair<Book, double> results in userPredictions.Results.Take(number))
                 {
-                    double score = results.Value * 100;
-                    Console.WriteLine(results.Key.Authors.Replace("|", ", ") + " - " + results.Key.Title + " - score - " + score.ToString("F2"));
+                    double score = results.Value;
+                    Console.WriteLine(results.Key.Authors.Replace("|", ", ") + " - " + results.Key.Title + " - score - " + score.ToString("F5"));
                 }
 
                 Console.WriteLine("");

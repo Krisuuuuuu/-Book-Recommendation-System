@@ -18,7 +18,7 @@ namespace Resources.DataSources
             orders.Add(order);
 
 
-            Client client = new Client("Christopher", "Crown", orders);
+            Client client = new Client("Krzysztof", "Korona", orders);
 
             clients.Add(client);
             return clients;
